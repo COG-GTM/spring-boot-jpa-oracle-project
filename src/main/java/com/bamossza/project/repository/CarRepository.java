@@ -17,7 +17,7 @@ public interface CarRepository extends JpaRepository<Car, Integer> {
 	List<Car> findAll();
 	
 	@Transactional
-	Car saveCar(Car car);
+	<S extends Car> S save(S car);
 	
 	void delete(Car car);
 }
