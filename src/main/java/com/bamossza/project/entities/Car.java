@@ -41,9 +41,9 @@ public class Car implements Serializable {
 	@Getter @Setter
     private String carModel;
 	
-	@Column(name="HORSEPOWER", nullable = true, length = 6)
+	@Column(name="HORSEPOWER", nullable = true)
 	@Getter @Setter
-    private String horsepower;
+    private Integer horsepower;
 	
 	@Column(name="CAR_ENGINE", nullable = true, length = 6)
 	@Getter @Setter
