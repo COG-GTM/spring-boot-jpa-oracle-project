@@ -1,8 +1,9 @@
 package com.bamossza.project.service;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -12,8 +13,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
@@ -29,9 +30,9 @@ public class CarServiceTest {
     @Mock
     private CarDao carDao;
 
-    @Before
+    @BeforeEach
     public void setup() {
-        MockitoAnnotations.initMocks(this);
+        MockitoAnnotations.openMocks(this);
     }
 
     @Test
@@ -47,9 +48,11 @@ public class CarServiceTest {
         verify(carDao, times(1)).findById(carId);
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test
     public void testFindById_InvalidId() {
-        carService.findById(0);
+        assertThrows(IllegalArgumentException.class, () -> {
+            carService.findById(0);
+        });
     }
 
     @Test
@@ -89,9 +92,11 @@ public class CarServiceTest {
         verify(carDao, times(1)).add(car);
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test
     public void testAdd_NullCar() {
-        carService.add(null);
+        assertThrows(IllegalArgumentException.class, () -> {
+            carService.add(null);
+        });
     }
 
     @Test
@@ -104,9 +109,11 @@ public class CarServiceTest {
         verify(carDao, times(1)).update(carId, car);
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test
     public void testUpdate_InvalidIdAndNullCar() {
-        carService.update(0, null);
+        assertThrows(IllegalArgumentException.class, () -> {
+            carService.update(0, null);
+        });
     }
 
     @Test
@@ -118,8 +125,10 @@ public class CarServiceTest {
         verify(carDao, times(1)).remove(carId);
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test
     public void testRemove_InvalidId() {
-        carService.remove(0);
+        assertThrows(IllegalArgumentException.class, () -> {
+            carService.remove(0);
+        });
     }
 }
