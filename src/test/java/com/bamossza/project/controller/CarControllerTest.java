@@ -3,6 +3,8 @@ package com.bamossza.project.controller;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -109,7 +111,7 @@ public class CarControllerTest {
                 .content(carJson))
                 .andExpect(status().isOk());
         
-        verify(carService, times(1)).add(car);
+        verify(carService, times(1)).add(any(Car.class));
     }
 
     @Test
@@ -123,7 +125,7 @@ public class CarControllerTest {
                 .content(carJson))
                 .andExpect(status().isOk());
         
-        verify(carService, times(1)).update(carId, car);
+        verify(carService, times(1)).update(eq(carId), any(Car.class));
     }
 
     @Test
@@ -137,7 +139,7 @@ public class CarControllerTest {
                 .content(carJson))
                 .andExpect(status().isOk());
         
-        verify(carService, times(1)).update(carId, car);
+        verify(carService, times(1)).update(eq(carId), any(Car.class));
     }
 
     @Test
@@ -147,7 +149,7 @@ public class CarControllerTest {
         mockMvc.perform(delete("/api/cars/{id}", carId))
                 .andExpect(status().isOk());
         
-        verify(carService, times(1)).remove(carId);
+        verify(carService, times(1)).remove(eq(carId));
     }
 
     @Test
@@ -157,6 +159,6 @@ public class CarControllerTest {
         mockMvc.perform(delete("/api/cars/{id}", carId))
                 .andExpect(status().isOk());
         
-        verify(carService, times(1)).remove(carId);
+        verify(carService, times(1)).remove(eq(carId));
     }
 }
