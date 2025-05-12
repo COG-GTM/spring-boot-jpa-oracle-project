@@ -1,5 +1,5 @@
 # Spring Boot + Spring Data JPA + Oracle
-Spring Boot project example.
+Spring Boot project example for a car management system. This RESTful API demonstrates CRUD operations using Spring Data JPA with Oracle database.
 
 ##### Restful Pattern:
 
