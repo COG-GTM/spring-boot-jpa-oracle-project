@@ -38,15 +38,15 @@ public class CarServiceTest {
     public void testFindById() {
         int id = 1;
         Car car = new Car("Toyota", "Camry", "200", "2.5L");
-        car.setCarId(id);
+        car.carId = id;
         
         when(carDao.findById(id)).thenReturn(car);
         
         Car result = carService.findById(id);
         
         assertNotNull(result);
-        assertEquals(id, result.getCarId().intValue());
-        assertEquals("Toyota", result.getCarBrand());
+        assertEquals(id, result.carId.intValue());
+        assertEquals("Toyota", result.carBrand);
         verify(carDao, times(1)).findById(id);
     }
     

@@ -17,10 +17,10 @@ public class CarTest {
         Car car = new Car(brand, model, horsepower, engine);
         
         assertNotNull(car);
-        assertEquals(brand, car.getCarBrand());
-        assertEquals(model, car.getCarModel());
-        assertEquals(horsepower, car.getHorsepower());
-        assertEquals(engine, car.getCarEngine());
+        assertEquals(brand, car.carBrand);
+        assertEquals(model, car.carModel);
+        assertEquals(horsepower, car.horsepower);
+        assertEquals(engine, car.carEngine);
     }
     
     @Test
@@ -32,16 +32,16 @@ public class CarTest {
         String engine = "1.8L";
         Integer id = 1;
         
-        car.setCarId(id);
-        car.setCarBrand(brand);
-        car.setCarModel(model);
-        car.setHorsepower(horsepower);
-        car.setCarEngine(engine);
+        car.carId = id;
+        car.carBrand = brand;
+        car.carModel = model;
+        car.horsepower = horsepower;
+        car.carEngine = engine;
         
-        assertEquals(id, car.getCarId());
-        assertEquals(brand, car.getCarBrand());
-        assertEquals(model, car.getCarModel());
-        assertEquals(horsepower, car.getHorsepower());
-        assertEquals(engine, car.getCarEngine());
+        assertEquals(id, car.carId);
+        assertEquals(brand, car.carBrand);
+        assertEquals(model, car.carModel);
+        assertEquals(horsepower, car.horsepower);
+        assertEquals(engine, car.carEngine);
     }
 }
