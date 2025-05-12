@@ -16,6 +16,7 @@ import com.bamossza.project.entities.Car;
 
 @DataJpaTest
 @SpringJUnitConfig
+@org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase(replace = org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase.Replace.NONE)
 public class CarRepositoryTest {
 
     @Autowired
