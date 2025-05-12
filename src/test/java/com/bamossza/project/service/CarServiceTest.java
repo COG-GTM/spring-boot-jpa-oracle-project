@@ -20,6 +20,7 @@ import org.mockito.MockitoAnnotations;
 
 import com.bamossza.project.dao.CarDao;
 import com.bamossza.project.entities.Car;
+import com.bamossza.project.entities.TestCar;
 
 public class CarServiceTest {
 
@@ -38,15 +39,36 @@ public class CarServiceTest {
     public void testFindById() {
         int id = 1;
         Car car = new Car("Toyota", "Camry", "200", "2.5L");
-        car.setCarId(id);
+        
+        try {
+            java.lang.reflect.Field field = Car.class.getDeclaredField("carId");
+            field.setAccessible(true);
+            field.set(car, id);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
         
         when(carDao.findById(id)).thenReturn(car);
         
         Car result = carService.findById(id);
         
         assertNotNull(result);
-        assertEquals(id, result.getCarId().intValue());
-        assertEquals("Toyota", result.getCarBrand());
+        
+        try {
+            java.lang.reflect.Field idField = Car.class.getDeclaredField("carId");
+            java.lang.reflect.Field brandField = Car.class.getDeclaredField("carBrand");
+            idField.setAccessible(true);
+            brandField.setAccessible(true);
+            
+            Integer resultId = (Integer) idField.get(result);
+            String resultBrand = (String) brandField.get(result);
+            
+            assertEquals(id, resultId.intValue());
+            assertEquals("Toyota", resultBrand);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+        
         verify(carDao, times(1)).findById(id);
     }
     
@@ -60,7 +82,15 @@ public class CarServiceTest {
         List<Map<String, Object>> carList = new ArrayList<>();
         Map<String, Object> carMap = new HashMap<>();
         Car car = new Car("Toyota", "Camry", "200", "2.5L");
-        car.setCarId(1);
+        
+        try {
+            java.lang.reflect.Field field = Car.class.getDeclaredField("carId");
+            field.setAccessible(true);
+            field.set(car, 1);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+        
         carMap.put("1", car);
         carList.add(carMap);
         

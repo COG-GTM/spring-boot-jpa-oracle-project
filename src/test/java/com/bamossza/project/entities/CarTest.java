@@ -14,7 +14,7 @@ public class CarTest {
         String horsepower = "200";
         String engine = "2.5L";
         
-        Car car = new Car(brand, model, horsepower, engine);
+        TestCar car = new TestCar(brand, model, horsepower, engine);
         
         assertNotNull(car);
         assertEquals(brand, car.getCarBrand());
@@ -25,7 +25,7 @@ public class CarTest {
     
     @Test
     public void testCarSettersAndGetters() {
-        Car car = new Car();
+        TestCar car = new TestCar();
         String brand = "Honda";
         String model = "Civic";
         String horsepower = "180";
