@@ -51,7 +51,7 @@ public class CarDaoImpl implements CarDao {
     @Override
     public void add(Car car) {
     	try {
-    		carRepository.save((Car) car);
+    		carRepository.saveCar(car);
 		} catch (Exception e) {
 			logger.error(e.getMessage(), e);
 		}
@@ -61,7 +61,7 @@ public class CarDaoImpl implements CarDao {
     public void update(int id, Car car) {
     	try {
     		car.setCarId(id);
-    		carRepository.save((Car) car);
+    		carRepository.saveCar(car);
 		} catch (Exception e) {
 			logger.error(e.getMessage(), e);
 		}
