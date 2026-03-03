@@ -17,30 +17,32 @@ import org.springframework.web.bind.annotation.RestController;
 import com.bamossza.project.entities.Car;
 import com.bamossza.project.service.CarService;
 
+/**
+ * REST controller for Car CRUD operations.
+ * Uses Java 8 Optional and lambda expressions for cleaner response handling.
+ */
 @RestController
 @RequestMapping(value = "/api/cars")
 public class CarController {
 
-	private static final Logger logger = LoggerFactory.getLogger(CarController.class);
-	
-	CarService carService;
+    private static final Logger logger = LoggerFactory.getLogger(CarController.class);
 
-	@Autowired
+    CarService carService;
+
+    @Autowired
     public CarController(CarService carService) {
         this.carService = carService;
     }
-	
-	@RequestMapping(value = "", method = RequestMethod.POST)
+
+    @RequestMapping(value = "", method = RequestMethod.POST)
     public ResponseEntity<Void> create(@RequestBody Car car) {
         try {
-        	logger.info(car.getCarBrand());
-        	logger.info(car.getCarEngine());
-        	logger.info(car.getCarModel());
-        	logger.info(car.getHorsepower());
+            logger.info("Creating car: brand={}, model={}, engine={}, hp={}",
+                    car.getCarBrand(), car.getCarModel(), car.getCarEngine(), car.getHorsepower());
             carService.add(car);
             return ResponseEntity.status(HttpStatus.OK).build();
         } catch (Exception e) {
-            e.printStackTrace();
+            logger.error("Error creating car: {}", e.getMessage(), e);
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         }
     }
@@ -48,46 +50,48 @@ public class CarController {
     @RequestMapping(value = "", method = RequestMethod.GET)
     public ResponseEntity<List<Map<String, Object>>> getAll() {
         try {
-        	List<Map<String, Object>> result = carService.findAll();
+            List<Map<String, Object>> result = carService.findAll();
             return ResponseEntity.status(HttpStatus.OK).body(result);
         } catch (Exception e) {
-        	logger.error(e.getMessage(), e);
+            logger.error("Error retrieving all cars: {}", e.getMessage(), e);
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         }
     }
-    
+
+    /**
+     * Get a car by ID using Java 8 Optional for clean null handling.
+     * Uses Optional.map() with lambda to build the response.
+     */
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
     public ResponseEntity<Car> getById(@PathVariable("id") int id) {
         try {
-            Car car = carService.findById(id);
-            if (car != null) {
-                return ResponseEntity.status(HttpStatus.OK).body(car);
-            } else {
-                return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
-            }
+            return carService.findById(id)
+                    .map(car -> ResponseEntity.status(HttpStatus.OK).body(car))
+                    .orElse(ResponseEntity.status(HttpStatus.NOT_FOUND).build());
         } catch (Exception e) {
-        	logger.error(e.getMessage(), e);
+            logger.error("Error retrieving car by id {}: {}", id, e.getMessage(), e);
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         }
     }
-	
-	@RequestMapping(value = "/{id}", method = RequestMethod.PUT)
+
+    @RequestMapping(value = "/{id}", method = RequestMethod.PUT)
     public ResponseEntity<Void> update(@PathVariable("id") int id, @RequestBody Car car) {
         try {
             carService.update(id, car);
             return ResponseEntity.status(HttpStatus.OK).build();
         } catch (Exception e) {
-            e.printStackTrace();
+            logger.error("Error updating car with id {}: {}", id, e.getMessage(), e);
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         }
     }
-    
+
     @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
     public ResponseEntity<Void> delete(@PathVariable("id") int id) {
         try {
             carService.remove(id);
             return ResponseEntity.status(HttpStatus.OK).build();
         } catch (Exception e) {
+            logger.error("Error deleting car with id {}: {}", id, e.getMessage(), e);
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         }
     }
