@@ -10,21 +10,23 @@ import javax.persistence.Id;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 
+/**
+ * JPA entity representing a Car.
+ * Uses Lombok annotations for boilerplate reduction.
+ */
 @Entity
 @Table(name="CAR")
 @JsonIgnoreProperties(ignoreUnknown=true)
+@ToString(exclude = "carId")
 public class Car implements Serializable {
 
 	private static final long serialVersionUID = 1L;
-	public static final Logger logger = LoggerFactory.getLogger(Car.class);
 	
 	@Id
 	@GeneratedValue(generator = "CAR_SEQ", strategy = GenerationType.SEQUENCE)
