@@ -49,12 +49,19 @@ public class Car implements Serializable {
 	@Getter @Setter
     private String carEngine;
 	
-	public Car(){}  
-	
+	public Car() {
+	}
+
     public Car(String carBrand, String carModel, String horsepower, String carEngine) {
         this.carBrand = carBrand;
         this.carModel = carModel;
         this.horsepower = horsepower;
         this.carEngine = carEngine;
+    }
+
+    @Override
+    public String toString() {
+        return String.format("Car{carId=%d, carBrand='%s', carModel='%s', horsepower='%s', carEngine='%s'}",
+                carId, carBrand, carModel, horsepower, carEngine);
     }
 }
