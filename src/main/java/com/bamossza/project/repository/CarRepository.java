@@ -7,17 +7,17 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.bamossza.project.entities.Car;
 
+/**
+ * Spring Data JPA repository for Car entities.
+ * Inherits standard CRUD operations from JpaRepository.
+ */
 @Transactional(readOnly = true)
 public interface CarRepository extends JpaRepository<Car, Integer> {
 
-	@Transactional(timeout = 10)
-	Car findByCarId(Integer carId);
-	
-	@Transactional(timeout = 10)
-	List<Car> findAll();
-	
-	@Transactional
-	<S extends Car> S save(Car car);
-	
-	void delete(Car car);
+    @Transactional(timeout = 10)
+    Car findByCarId(Integer carId);
+
+    @Transactional(timeout = 10)
+    @Override
+    List<Car> findAll();
 }
