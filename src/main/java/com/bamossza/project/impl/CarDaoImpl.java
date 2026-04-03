@@ -37,16 +37,14 @@ public class CarDaoImpl implements CarDao {
     	return null;
     }
 
-    @Override
-    public void remove(int id) {
-    	try {
-    		Car car = new Car();
-    		car.setCarId(id);
-    		carRepository.delete(car);
+	    @Override
+	    public void remove(int id) {
+	    	try {
+	    		carRepository.deleteById(id);
 		} catch (Exception e) {
 			logger.error(e.getMessage(), e);
 		}
-    }
+	    }
 
     @Override
     public void add(Car car) {
