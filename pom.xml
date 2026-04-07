@@ -23,6 +23,7 @@
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 		<java.version>1.8</java.version>
 		
+		<spring-data-releasetrain.version>1.13.11.RELEASE</spring-data-releasetrain.version>
 	</properties>
 
 	<dependencies>
