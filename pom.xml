@@ -22,7 +22,8 @@
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 		<java.version>1.8</java.version>
-		
+		<!-- CVE-2022-22965: Spring Framework リモートコード実行（Spring4Shell）の脆弱性を修正 -->
+		<spring.version>5.3.18</spring.version>
 	</properties>
 
 	<dependencies>
