@@ -22,7 +22,8 @@
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 		<java.version>1.8</java.version>
-		
+		<!-- CVE-2018-1273: spring-data-commons プロパティインジェクション脆弱性を修正 -->
+		<spring-data-releasetrain.version>Ingalls-SR11</spring-data-releasetrain.version>
 	</properties>
 
 	<dependencies>
