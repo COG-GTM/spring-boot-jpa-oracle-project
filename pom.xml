@@ -22,7 +22,8 @@
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 		<java.version>1.8</java.version>
-		
+		<!-- CVE-2018-8014: tomcat-embed-core 安全でないデフォルト設定の脆弱性を修正 -->
+		<tomcat.version>8.5.32</tomcat.version>
 	</properties>
 
 	<dependencies>
