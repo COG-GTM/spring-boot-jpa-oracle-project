@@ -57,20 +57,13 @@
 			<scope>test</scope>
 		</dependency>
 
-		 <!-- Oracle JDBC driver -->
-        <dependency>
-            <groupId>com.oracle</groupId>
-            <artifactId>ojdbc7</artifactId>
-            <version>12.1.0.2</version>
-        </dependency>
+		<!-- PostgreSQL JDBC driver -->
+		<dependency>
+			<groupId>org.postgresql</groupId>
+			<artifactId>postgresql</artifactId>
+		</dependency>
 
 	</dependencies>
-	<repositories>
-		<repository>
-			<id>jahia</id>
-			<url>http://maven.jahia.org/maven2/</url>
-		</repository>
-	</repositories>
 	<build>
 		<plugins>
 			<plugin>
