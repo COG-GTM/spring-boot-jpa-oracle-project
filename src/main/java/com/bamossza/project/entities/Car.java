@@ -7,7 +7,6 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
 import org.slf4j.Logger;
@@ -27,8 +26,7 @@ public class Car implements Serializable {
 	public static final Logger logger = LoggerFactory.getLogger(Car.class);
 	
 	@Id
-	@GeneratedValue(generator = "CAR_SEQ", strategy = GenerationType.SEQUENCE)
-	@SequenceGenerator(name = "CAR_SEQ", sequenceName = "CAR_SEQ", allocationSize=1)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name="CAR_ID", unique=true, nullable=false, precision=10, scale=0)
 	@Getter @Setter
 	private Integer carId;
