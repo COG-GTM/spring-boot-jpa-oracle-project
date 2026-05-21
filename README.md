@@ -11,15 +11,21 @@ PUT 	/api/cars/{id}		Update car by id
 DELETE 	/api/cars/{id}		Delete car by id
 ```
   
-##### เครื่องมือที่ใช้:
+##### Requirements:
 
-1. Spring boot 1.5.8.RELEASE
-2. Java 8
+- **JDK 11** (Temurin/Adoptium recommended)
+- Maven 3.6+
+- Oracle database 11g express (Docker: `gvenzl/oracle-xe:11-slim`)
+
+##### Tech Stack:
+
+1. Spring Boot 2.7.18
+2. Java 11
 3. Oracle database 11g express
-4. Oracle JDBC driver ojdbc7.jar
+4. Oracle JDBC driver ojdbc11
 5. Lombok
 6. Maven
-7. Hibernate Core 5.0.12.Final
+7. Spring Data JPA / Hibernate 5.6
   
 
 ##### Project Run test:
