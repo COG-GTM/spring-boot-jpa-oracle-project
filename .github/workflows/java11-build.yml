@@ -1,0 +1,56 @@
+name: Java 11 Build
+
+on:
+  push:
+    branches: [master]
+  pull_request:
+    branches: [master]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    services:
+      oracle:
+        image: gvenzl/oracle-xe:11-slim
+        env:
+          ORACLE_PASSWORD: carsystem
+        ports:
+          - 1521:1521
+        options: >-
+          --health-cmd "echo 'SELECT 1 FROM DUAL;' | sqlplus -s system/carsystem@//localhost:1521/XE"
+          --health-interval 20s
+          --health-timeout 10s
+          --health-retries 10
+          --health-start-period 60s
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup JDK 11
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '11'
+          cache: maven
+
+      - name: Create Oracle app user
+        run: |
+          echo "
+          BEGIN
+            EXECUTE IMMEDIATE 'CREATE USER carsystem IDENTIFIED BY carsystem';
+          EXCEPTION
+            WHEN OTHERS THEN
+              IF SQLCODE = -1920 THEN NULL;
+              ELSE RAISE;
+              END IF;
+          END;
+          /
+          GRANT CONNECT, RESOURCE, UNLIMITED TABLESPACE TO carsystem;
+          " | docker exec -i $(docker ps -q --filter ancestor=gvenzl/oracle-xe:11-slim) sqlplus -s system/carsystem@//localhost:1521/XE
+
+      - name: Build
+        run: mvn -B -e clean compile
+
+      - name: Package
+        run: mvn -B -e -DskipTests package
