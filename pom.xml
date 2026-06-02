@@ -57,11 +57,11 @@
 			<scope>test</scope>
 		</dependency>
 
-		<!-- H2 in-memory database for default profile -->
+		<!-- H2 in-memory database for testing and local development -->
 		<dependency>
 			<groupId>com.h2database</groupId>
 			<artifactId>h2</artifactId>
-			<scope>runtime</scope>
+			<scope>test</scope>
 		</dependency>
 
 		<!-- Oracle JDBC driver (runtime only, for oracle profile) -->
