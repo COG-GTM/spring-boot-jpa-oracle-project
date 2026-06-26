@@ -13,7 +13,7 @@ DELETE 	/api/cars/{id}		Delete car by id
   
 ##### เครื่องมือที่ใช้:
 
-1. Spring boot 3.5.3
+1. Spring boot 3.5.15
 2. Java 17
 3. Oracle database 11g express
 4. Oracle JDBC driver ojdbc11
