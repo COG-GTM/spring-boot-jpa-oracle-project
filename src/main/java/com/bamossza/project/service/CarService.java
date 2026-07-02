@@ -1,13 +1,14 @@
 package com.bamossza.project.service;
 
 import java.util.List;
-import java.util.Map;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.bamossza.project.dao.CarDao;
+import com.bamossza.project.dto.CarDto;
 import com.bamossza.project.entities.Car;
 
 @Service
@@ -21,7 +22,7 @@ public class CarService {
     	
     }
 
-    public Car findById(int id) {
+    public Optional<Car> findById(int id) {
         if (id <= 0) {
             throw new IllegalArgumentException("ID cannot be 0 or < 0");
         }
@@ -35,14 +36,8 @@ public class CarService {
         carDao.remove(id);
     }
 
-    public List<Map<String, Object>> findAll() {
-
-        List<Map<String, Object>> result = carDao.findAll();
-        if (result.size() > 0) {
-            return result;
-        } else {
-            return null;
-        }
+    public List<CarDto> findAll() {
+        return carDao.findAll();
     }
 
     public void add(Car car) {
