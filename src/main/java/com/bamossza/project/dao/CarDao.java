@@ -1,13 +1,14 @@
 package com.bamossza.project.dao;
 
 import java.util.List;
-import java.util.Map;
+import java.util.Optional;
 
+import com.bamossza.project.dto.CarDto;
 import com.bamossza.project.entities.Car;
 
 public interface CarDao {
 
-    public Car findById(int id);
+    public Optional<Car> findById(int id);
 
     public void remove(int id);
 
@@ -15,5 +16,5 @@ public interface CarDao {
 
     public void update(int id, Car car);
 
-    public List<Map<String, Object>> findAll();
+    public List<CarDto> findAll();
 }

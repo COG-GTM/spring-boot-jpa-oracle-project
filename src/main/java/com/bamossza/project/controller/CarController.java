@@ -1,7 +1,6 @@
 package com.bamossza.project.controller;
 
 import java.util.List;
-import java.util.Map;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -14,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.bamossza.project.dto.CarDto;
 import com.bamossza.project.entities.Car;
 import com.bamossza.project.service.CarService;
 
@@ -46,9 +46,9 @@ public class CarController {
     }
 
     @RequestMapping(value = "", method = RequestMethod.GET)
-    public ResponseEntity<List<Map<String, Object>>> getAll() {
+    public ResponseEntity<List<CarDto>> getAll() {
         try {
-        	List<Map<String, Object>> result = carService.findAll();
+        	List<CarDto> result = carService.findAll();
             return ResponseEntity.status(HttpStatus.OK).body(result);
         } catch (Exception e) {
         	logger.error(e.getMessage(), e);
@@ -59,12 +59,9 @@ public class CarController {
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
     public ResponseEntity<Car> getById(@PathVariable("id") int id) {
         try {
-            Car car = carService.findById(id);
-            if (car != null) {
-                return ResponseEntity.status(HttpStatus.OK).body(car);
-            } else {
-                return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
-            }
+            return carService.findById(id)
+                    .map(car -> ResponseEntity.status(HttpStatus.OK).body(car))
+                    .orElseGet(() -> ResponseEntity.status(HttpStatus.NOT_FOUND).build());
         } catch (Exception e) {
         	logger.error(e.getMessage(), e);
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
