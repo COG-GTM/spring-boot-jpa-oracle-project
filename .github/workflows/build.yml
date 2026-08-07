@@ -48,8 +48,25 @@ jobs:
             -H 'Content-Type: application/json' \
             -d '{"carBrand":"MAZDA","carModel":"SKYACTIV-G 2.0","horsepower":"165","carEngine":"2000"}' \
             http://localhost:8080/api/cars
-          curl --fail --silent --show-error http://localhost:8080/api/cars > /tmp/car-list.json
+          if ! curl --fail --silent --show-error http://localhost:8080/api/cars > /tmp/car-list.json; then
+            echo "Car list request failed"
+            cat /tmp/car-smoke.log
+            cat /tmp/car-list.json
+            exit 1
+          fi
+          if ! jq -e 'type == "array" and length > 0' /tmp/car-list.json > /dev/null 2>&1; then
+            echo "Car list response was empty or invalid JSON"
+            cat /tmp/car-smoke.log
+            cat /tmp/car-list.json
+            exit 1
+          fi
           car_id=$(jq -r '.[0] | to_entries[0].value.carId' /tmp/car-list.json)
+          if [ -z "$car_id" ] || [ "$car_id" = "null" ]; then
+            echo "Car list response did not contain a car ID"
+            cat /tmp/car-smoke.log
+            cat /tmp/car-list.json
+            exit 1
+          fi
           curl --fail --silent --show-error "http://localhost:8080/api/cars/$car_id" > /tmp/car-response.json
           jq -e '.carBrand == "MAZDA"' /tmp/car-response.json > /dev/null
           jq -e '.carModel == "SKYACTIV-G 2.0"' /tmp/car-response.json > /dev/null
