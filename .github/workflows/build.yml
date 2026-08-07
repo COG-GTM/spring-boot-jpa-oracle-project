@@ -48,6 +48,11 @@ jobs:
             -H 'Content-Type: application/json' \
             -d '{"carBrand":"MAZDA","carModel":"SKYACTIV-G 2.0","horsepower":"165","carEngine":"2000"}' \
             http://localhost:8080/api/cars
-          curl --fail --silent --show-error http://localhost:8080/api/cars/1 > /tmp/car-response.json
-          grep -q '"carId":1,"carBrand":"MAZDA","carModel":"SKYACTIV-G 2.0"' /tmp/car-response.json
+          curl --fail --silent --show-error http://localhost:8080/api/cars > /tmp/car-list.json
+          car_id=$(jq -r '.[0] | to_entries[0].value.carId' /tmp/car-list.json)
+          curl --fail --silent --show-error "http://localhost:8080/api/cars/$car_id" > /tmp/car-response.json
+          jq -e '.carBrand == "MAZDA"' /tmp/car-response.json > /dev/null
+          jq -e '.carModel == "SKYACTIV-G 2.0"' /tmp/car-response.json > /dev/null
+          jq -e '.horsepower == "165"' /tmp/car-response.json > /dev/null
+          jq -e '.carEngine == "2000"' /tmp/car-response.json > /dev/null
           cat /tmp/car-response.json
