@@ -27,12 +27,27 @@ jobs:
             > /tmp/car-smoke.log 2>&1 &
           app_pid=$!
           trap 'kill "$app_pid" 2>/dev/null || true' EXIT
+          ready=0
           for attempt in $(seq 1 30); do
+            if ! kill -0 "$app_pid" 2>/dev/null; then
+              cat /tmp/car-smoke.log
+              exit 1
+            fi
             if curl --fail --silent http://localhost:8080/api/cars > /tmp/car-response.json; then
               cat /tmp/car-response.json
-              exit 0
+              ready=1
+              break
             fi
             sleep 1
           done
-          cat /tmp/car-smoke.log
-          exit 1
+          if [ "$ready" -ne 1 ]; then
+            cat /tmp/car-smoke.log
+            exit 1
+          fi
+          curl --fail --silent --show-error -X POST \
+            -H 'Content-Type: application/json' \
+            -d '{"carBrand":"MAZDA","carModel":"SKYACTIV-G 2.0","horsepower":"165","carEngine":"2000"}' \
+            http://localhost:8080/api/cars
+          curl --fail --silent --show-error http://localhost:8080/api/cars/1 > /tmp/car-response.json
+          grep -q '"carId":1,"carBrand":"MAZDA","carModel":"SKYACTIV-G 2.0"' /tmp/car-response.json
+          cat /tmp/car-response.json
