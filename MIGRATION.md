@@ -9,10 +9,10 @@ on Java 17, and the pitfalls encountered along the way.
 | | Before | After |
 | --- | --- | --- |
 | Spring Boot | 1.5.8.RELEASE | 3.5.3 |
-| Spring Framework | 4.3.x | 6.2.8 |
+| Spring Framework | 4.3.x | 6.2.18 |
 | Spring Data JPA | 1.11.x | 3.5.1 |
 | Java | 8 | 17 |
-| Hibernate ORM | 5.0.12.Final | 6.6.18.Final |
+| Hibernate ORM | 5.0.12.Final | 6.6.30.Final |
 | Persistence API | javax.persistence (JPA 2.1) | jakarta.persistence 3.1 |
 | Oracle JDBC | com.oracle:ojdbc7:12.1.0.2 | com.oracle.database.jdbc:ojdbc11:23.7.0.25.01 |
 
@@ -39,6 +39,12 @@ the old build depended on.
   plain HTTP, which modern Maven blocks by default and which is unsafe for
   dependency resolution; Oracle now publishes drivers to Maven Central, so the
   repository is no longer needed.
+- Pinned a few transitive versions ahead of the Boot 3.5.3 BOM to pull in
+  published CVE fixes (`spring-framework.version` 6.2.18, `tomcat.version`
+  10.1.54, `jackson-bom.version` 2.20.2, `logback.version` 1.5.38,
+  `hibernate.version` 6.6.30.Final). These are temporary overrides: drop each
+  property once the Boot BOM's own managed version is at or above it, so the
+  project goes back to a fully Boot-tested dependency set.
 - Excluded Lombok from the repackaged fat jar via the `spring-boot-maven-plugin`
   configuration (Lombok is compile-only).
 

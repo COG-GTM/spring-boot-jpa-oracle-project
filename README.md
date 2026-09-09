@@ -19,7 +19,7 @@ DELETE 	/api/cars/{id}		Delete car by id
 4. Oracle JDBC driver ojdbc11 (com.oracle.database.jdbc:ojdbc11:23.7.0.25.01, managed by the Spring Boot BOM)
 5. Lombok
 6. Maven
-7. Hibernate Core 6.6.18.Final (Jakarta Persistence 3.1)
+7. Hibernate Core 6.6.30.Final (Jakarta Persistence 3.1)
 
 ##### Running locally:
 
