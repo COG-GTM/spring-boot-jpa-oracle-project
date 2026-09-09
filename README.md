@@ -13,14 +13,66 @@ DELETE 	/api/cars/{id}		Delete car by id
   
 ##### เครื่องมือที่ใช้:
 
-1. Spring boot 1.5.8.RELEASE
-2. Java 8
+1. Spring Boot 3.5.3
+2. Java 17
 3. Oracle database 11g express
-4. Oracle JDBC driver ojdbc7.jar
+4. Oracle JDBC driver ojdbc11 (com.oracle.database.jdbc:ojdbc11:23.7.0.25.01, managed by the Spring Boot BOM)
 5. Lombok
 6. Maven
-7. Hibernate Core 5.0.12.Final
-  
+7. Hibernate Core 6.6.30.Final (Jakarta Persistence 3.1)
+
+##### Running locally:
+
+Requirements: JDK 17 and Maven. Docker is used for the Oracle database.
+
+1. Start Oracle XE:
+
+```
+docker run -d --name oracle-xe -p 1521:1521 -e ORACLE_PASSWORD=oracle -e APP_USER=carsystem -e APP_USER_PASSWORD=carsystem gvenzl/oracle-xe:11-slim
+```
+
+The first start initializes the database and takes a few minutes; wait for `DATABASE IS READY TO USE!` in `docker logs -f oracle-xe`. On later sessions just run `docker start oracle-xe`.
+
+These are throwaway local-development credentials and the command publishes port 1521 on all interfaces. On a shared or internet-reachable host, bind it to loopback instead (`-p 127.0.0.1:1521:1521`) and use your own passwords.
+
+2. Build and run:
+
+```
+./mvnw clean package
+./mvnw spring-boot:run
+```
+
+(`mvn` works too if you have Maven installed locally.)
+
+No extra JVM flags are needed: `application.properties` already sets `spring.datasource.hikari.data-source-properties.oracle.jdbc.timezoneAsRegion=false`, which avoids `ORA-01882: timezone region not found` when ojdbc11 connects to Oracle 11g (see MIGRATION.md).
+
+The app listens on port 8080 and recreates the `CAR` table and `CAR_SEQ` sequence on startup (`spring.jpa.hibernate.ddl-auto=create-drop`).
+
+3. Call the API:
+
+```
+# Create
+curl -i -X POST http://localhost:8080/api/cars \
+  -H 'Content-Type: application/json' \
+  -d '{"carBrand":"MAZDA","carModel":"SKYACTIV-G 2.0","horsepower":"165","carEngine":"2000"}'
+
+# Get all
+curl -i http://localhost:8080/api/cars
+
+# Get by id
+curl -i http://localhost:8080/api/cars/1
+
+# Update by id
+curl -i -X PUT http://localhost:8080/api/cars/1 \
+  -H 'Content-Type: application/json' \
+  -d '{"carBrand":"TOYOTA","carModel":"Corolla Altis","horsepower":"110","carEngine":"1600"}'
+
+# Delete by id
+curl -i -X DELETE http://localhost:8080/api/cars/1
+```
+
+Upgrading from the original Spring Boot 1.5 / Java 8 stack is documented in [MIGRATION.md](MIGRATION.md).
+
 
 ##### Project Run test:
 
