@@ -31,7 +31,9 @@ Requirements: JDK 17 and Maven. Docker is used for the Oracle database.
 docker run -d --name oracle-xe -p 1521:1521 -e ORACLE_PASSWORD=oracle -e APP_USER=carsystem -e APP_USER_PASSWORD=carsystem gvenzl/oracle-xe:11-slim
 ```
 
-Wait until the container reports it is healthy (first start initializes the database and takes a few minutes). On later sessions just run `docker start oracle-xe`.
+The first start initializes the database and takes a few minutes; wait for `DATABASE IS READY TO USE!` in `docker logs -f oracle-xe`. On later sessions just run `docker start oracle-xe`.
+
+These are throwaway local-development credentials and the command publishes port 1521 on all interfaces. On a shared or internet-reachable host, bind it to loopback instead (`-p 127.0.0.1:1521:1521`) and use your own passwords.
 
 2. Build and run:
 
