@@ -14,7 +14,7 @@
 	<parent>
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
-		<version>3.3.13</version>
+		<version>3.5.3</version>
 		<relativePath />
 	</parent>
 
@@ -22,7 +22,13 @@
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 		<java.version>17</java.version>
-		
+
+		<!-- Patch versions ahead of the Boot 3.5.3 BOM, for published CVE fixes -->
+		<spring-framework.version>6.2.18</spring-framework.version>
+		<tomcat.version>10.1.54</tomcat.version>
+		<jackson-bom.version>2.20.2</jackson-bom.version>
+		<logback.version>1.5.38</logback.version>
+		<hibernate.version>6.6.30.Final</hibernate.version>
 	</properties>
 
 	<dependencies>
