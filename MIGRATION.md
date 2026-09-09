@@ -95,14 +95,14 @@ The modern Oracle driver sends the client's timezone as a named region. Oracle
 java.sql.SQLException: ORA-01882: timezone region not found
 ```
 
-Start the application with the driver flag that sends a fixed GMT offset instead
-of a region name:
+The driver is therefore told to send a fixed GMT offset instead of a region name.
+This is configured once in `application.properties`, so it applies to both
+`spring-boot:run` and the packaged jar:
 
 ```
-mvn spring-boot:run -Dspring-boot.run.jvmArguments="-Doracle.jdbc.timezoneAsRegion=false"
+spring.datasource.hikari.data-source-properties.oracle.jdbc.timezoneAsRegion=false
 ```
 
-The same system property must be set when the packaged jar is run
-(`java -Doracle.jdbc.timezoneAsRegion=false -jar target/car-0.0.1-SNAPSHOT.jar`).
-This is a driver/database-version mismatch, not an application bug — it goes away
-against a modern Oracle database.
+(The equivalent JVM flag `-Doracle.jdbc.timezoneAsRegion=false` only matters if
+that property is removed.) This is a driver/database-version mismatch, not an
+application bug — it goes away against a modern Oracle database.

@@ -38,11 +38,13 @@ These are throwaway local-development credentials and the command publishes port
 2. Build and run:
 
 ```
-mvn clean package
-mvn spring-boot:run -Dspring-boot.run.jvmArguments="-Doracle.jdbc.timezoneAsRegion=false"
+./mvnw clean package
+./mvnw spring-boot:run
 ```
 
-The `-Doracle.jdbc.timezoneAsRegion=false` flag avoids `ORA-01882: timezone region not found` when ojdbc11 connects to Oracle 11g (see MIGRATION.md).
+(`mvn` works too if you have Maven installed locally.)
+
+No extra JVM flags are needed: `application.properties` already sets `spring.datasource.hikari.data-source-properties.oracle.jdbc.timezoneAsRegion=false`, which avoids `ORA-01882: timezone region not found` when ojdbc11 connects to Oracle 11g (see MIGRATION.md).
 
 The app listens on port 8080 and recreates the `CAR` table and `CAR_SEQ` sequence on startup (`spring.jpa.hibernate.ddl-auto=create-drop`).
 
