@@ -13,14 +13,62 @@ DELETE 	/api/cars/{id}		Delete car by id
   
 ##### เครื่องมือที่ใช้:
 
-1. Spring boot 1.5.8.RELEASE
-2. Java 8
+1. Spring Boot 3.3.13
+2. Java 17
 3. Oracle database 11g express
-4. Oracle JDBC driver ojdbc7.jar
+4. Oracle JDBC driver ojdbc11 (com.oracle.database.jdbc:ojdbc11:21.9.0.0, managed by the Spring Boot BOM)
 5. Lombok
 6. Maven
-7. Hibernate Core 5.0.12.Final
-  
+7. Hibernate Core 6.5.3.Final (Jakarta Persistence 3.1)
+
+##### Running locally:
+
+Requirements: JDK 17 and Maven. Docker is used for the Oracle database.
+
+1. Start Oracle XE:
+
+```
+docker run -d --name oracle-xe -p 1521:1521 -e ORACLE_PASSWORD=oracle -e APP_USER=carsystem -e APP_USER_PASSWORD=carsystem gvenzl/oracle-xe:11-slim
+```
+
+Wait until the container reports it is healthy (first start initializes the database and takes a few minutes). On later sessions just run `docker start oracle-xe`.
+
+2. Build and run:
+
+```
+mvn clean package
+mvn spring-boot:run -Dspring-boot.run.jvmArguments="-Doracle.jdbc.timezoneAsRegion=false"
+```
+
+The `-Doracle.jdbc.timezoneAsRegion=false` flag avoids `ORA-01882: timezone region not found` when ojdbc11 connects to Oracle 11g (see MIGRATION.md).
+
+The app listens on port 8080 and recreates the `CAR` table and `CAR_SEQ` sequence on startup (`spring.jpa.hibernate.ddl-auto=create-drop`).
+
+3. Call the API:
+
+```
+# Create
+curl -i -X POST http://localhost:8080/api/cars \
+  -H 'Content-Type: application/json' \
+  -d '{"carBrand":"MAZDA","carModel":"SKYACTIV-G 2.0","horsepower":"165","carEngine":"2000"}'
+
+# Get all
+curl -i http://localhost:8080/api/cars
+
+# Get by id
+curl -i http://localhost:8080/api/cars/1
+
+# Update by id
+curl -i -X PUT http://localhost:8080/api/cars/1 \
+  -H 'Content-Type: application/json' \
+  -d '{"carBrand":"TOYOTA","carModel":"Corolla Altis","horsepower":"110","carEngine":"1600"}'
+
+# Delete by id
+curl -i -X DELETE http://localhost:8080/api/cars/1
+```
+
+Upgrading from the original Spring Boot 1.5 / Java 8 stack is documented in [MIGRATION.md](MIGRATION.md).
+
 
 ##### Project Run test:
 
