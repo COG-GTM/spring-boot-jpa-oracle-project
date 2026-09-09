@@ -1,20 +1,20 @@
-# Migration: Spring Boot 1.5.8 / Java 8 -> Spring Boot 3.3.13 / Java 17
+# Migration: Spring Boot 1.5.8 / Java 8 -> Spring Boot 3.5.3 / Java 17
 
 This document describes the upgrade of this project from its original stack
-(Spring Boot 1.5.8.RELEASE, Java 8, Hibernate 5.0, ojdbc7) to Spring Boot 3.3.13
+(Spring Boot 1.5.8.RELEASE, Java 8, Hibernate 5.0, ojdbc7) to Spring Boot 3.5.3
 on Java 17, and the pitfalls encountered along the way.
 
 ## Resulting stack
 
 | | Before | After |
 | --- | --- | --- |
-| Spring Boot | 1.5.8.RELEASE | 3.3.13 |
-| Spring Framework | 4.3.x | 6.1.21 |
-| Spring Data JPA | 1.11.x | 3.3.13 |
+| Spring Boot | 1.5.8.RELEASE | 3.5.3 |
+| Spring Framework | 4.3.x | 6.2.8 |
+| Spring Data JPA | 1.11.x | 3.5.1 |
 | Java | 8 | 17 |
-| Hibernate ORM | 5.0.12.Final | 6.5.3.Final |
+| Hibernate ORM | 5.0.12.Final | 6.6.18.Final |
 | Persistence API | javax.persistence (JPA 2.1) | jakarta.persistence 3.1 |
-| Oracle JDBC | com.oracle:ojdbc7:12.1.0.2 | com.oracle.database.jdbc:ojdbc11:21.9.0.0 |
+| Oracle JDBC | com.oracle:ojdbc7:12.1.0.2 | com.oracle.database.jdbc:ojdbc11:23.7.0.25.01 |
 
 ## Why
 
@@ -29,10 +29,11 @@ the old build depended on.
 
 ### 1. Build (`pom.xml`)
 
-- Parent POM `spring-boot-starter-parent` 1.5.8.RELEASE -> 3.3.13.
+- Parent POM `spring-boot-starter-parent` 1.5.8.RELEASE -> 3.5.3 (initially 3.3.13,
+  then bumped to 3.5.3 to pick up security fixes).
 - `java.version` 1.8 -> 17.
 - Oracle driver `com.oracle:ojdbc7:12.1.0.2` -> `com.oracle.database.jdbc:ojdbc11`
-  with no explicit version — the Boot BOM manages it (21.9.0.0).
+  with no explicit version — the Boot BOM manages it (23.7.0.25.01).
 - Removed the `jahia` repository (`http://maven.jahia.org/maven2/`). It was only
   there to resolve ojdbc7, which was never published to Maven Central. It is also
   plain HTTP, which modern Maven blocks by default and which is unsafe for

@@ -13,13 +13,13 @@ DELETE 	/api/cars/{id}		Delete car by id
   
 ##### เครื่องมือที่ใช้:
 
-1. Spring Boot 3.3.13
+1. Spring Boot 3.5.3
 2. Java 17
 3. Oracle database 11g express
-4. Oracle JDBC driver ojdbc11 (com.oracle.database.jdbc:ojdbc11:21.9.0.0, managed by the Spring Boot BOM)
+4. Oracle JDBC driver ojdbc11 (com.oracle.database.jdbc:ojdbc11:23.7.0.25.01, managed by the Spring Boot BOM)
 5. Lombok
 6. Maven
-7. Hibernate Core 6.5.3.Final (Jakarta Persistence 3.1)
+7. Hibernate Core 6.6.18.Final (Jakarta Persistence 3.1)
 
 ##### Running locally:
 
