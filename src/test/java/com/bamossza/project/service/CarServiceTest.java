@@ -86,6 +86,22 @@ class CarServiceTest {
 	}
 
 	@Test
+	void updateAcceptsNonPositiveIdWhenCarIsNotNull() {
+		Car car = new Car("Audi", "A4", "201", "2.0L");
+
+		carService.update(0, car);
+
+		then(carDao).should().update(0, car);
+	}
+
+	@Test
+	void updateAcceptsNullCarWhenIdIsPositive() {
+		carService.update(4, null);
+
+		then(carDao).should().update(4, null);
+	}
+
+	@Test
 	void updateDelegatesToDao() {
 		Car car = new Car("Ford", "Focus", "150", "1.5L");
 

@@ -69,6 +69,21 @@ class CarRepositoryTest {
 	}
 
 	@Test
+	void deleteRemovesCarWhenGivenDetachedIdOnlyInstance() {
+		Car saved = carRepository.save(new Car("Nissan", "370Z", "332", "3.7L"));
+		entityManager.flush();
+		entityManager.clear();
+
+		Car idOnly = new Car();
+		idOnly.setCarId(saved.getCarId());
+		carRepository.delete(idOnly);
+		entityManager.flush();
+		entityManager.clear();
+
+		assertThat(carRepository.findByCarId(saved.getCarId())).isNull();
+	}
+
+	@Test
 	void entityIsMappedToCarTableColumns() {
 		Car saved = carRepository.save(new Car("BMW", "M3", "473", "3.0L"));
 		entityManager.flush();
