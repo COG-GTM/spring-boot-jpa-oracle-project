@@ -68,7 +68,7 @@
 	<repositories>
 		<repository>
 			<id>jahia</id>
-			<url>http://maven.jahia.org/maven2/</url>
+			<url>https://maven.jahia.org/maven2/</url>
 		</repository>
 	</repositories>
 	<build>
