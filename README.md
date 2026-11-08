@@ -1,6 +1,9 @@
 # Spring Boot + Spring Data JPA + Oracle
 Spring Boot project example.
 
+> Persistence now defaults to MongoDB (`mongodb` profile). The original Oracle/JPA path is the `oracle` profile.
+> See [MIGRATION.md](MIGRATION.md) for profiles, preserved behavior, cutover, rollback and verification.
+
 ##### Restful Pattern:
 
 ```

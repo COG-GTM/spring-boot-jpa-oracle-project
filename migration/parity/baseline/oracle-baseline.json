@@ -1,0 +1,476 @@
+{
+  "baseUrl": "http://localhost:8081",
+  "steps": [
+    {
+      "status": 200,
+      "contentType": null,
+      "emptyBody": true,
+      "body": "",
+      "name": "get-all-empty"
+    },
+    {
+      "status": 200,
+      "contentType": null,
+      "emptyBody": true,
+      "body": "",
+      "name": "create-full"
+    },
+    {
+      "status": 200,
+      "contentType": null,
+      "emptyBody": true,
+      "body": "",
+      "name": "create-empty-string-and-numeric-hp"
+    },
+    {
+      "status": 200,
+      "contentType": null,
+      "emptyBody": true,
+      "body": "",
+      "name": "create-client-id-ignored-unknown-field"
+    },
+    {
+      "status": 400,
+      "contentType": null,
+      "emptyBody": true,
+      "body": "",
+      "name": "create-brand-51-chars"
+    },
+    {
+      "status": 400,
+      "contentType": null,
+      "emptyBody": true,
+      "body": "",
+      "name": "create-horsepower-7-chars"
+    },
+    {
+      "status": 200,
+      "contentType": null,
+      "emptyBody": true,
+      "body": "",
+      "name": "create-brand-50-chars"
+    },
+    {
+      "status": 200,
+      "contentType": null,
+      "emptyBody": true,
+      "body": "",
+      "name": "create-multibyte-21-chars"
+    },
+    {
+      "status": 200,
+      "contentType": null,
+      "emptyBody": true,
+      "body": "",
+      "name": "create-6-supplementary-chars"
+    },
+    {
+      "status": 400,
+      "contentType": null,
+      "emptyBody": true,
+      "body": "",
+      "name": "create-7-supplementary-chars"
+    },
+    {
+      "status": 200,
+      "contentType": null,
+      "emptyBody": true,
+      "body": "",
+      "name": "create-whitespace-preserved"
+    },
+    {
+      "status": 400,
+      "contentType": "application/json;charset=UTF-8",
+      "emptyBody": false,
+      "body": {
+        "timestamp": "<ignored>",
+        "status": 400,
+        "error": "Bad Request",
+        "exception": "org.springframework.http.converter.HttpMessageNotReadableException",
+        "message": "JSON parse error: Unrecognized token 'not': was expecting 'null', 'true', 'false' or NaN; nested exception is com.fasterxml.jackson.core.JsonParseException: Unrecognized token 'not': was expecting 'null', 'true', 'false' or NaN\n at [Source: java.io.PushbackInputStream@<hash>; line: 1, column: 5]",
+        "path": "/api/cars"
+      },
+      "name": "create-malformed-json"
+    },
+    {
+      "status": 400,
+      "contentType": "application/json;charset=UTF-8",
+      "emptyBody": false,
+      "body": {
+        "timestamp": "<ignored>",
+        "status": 400,
+        "error": "Bad Request",
+        "exception": "org.springframework.http.converter.HttpMessageNotReadableException",
+        "message": "Required request body is missing: public org.springframework.http.ResponseEntity<java.lang.Void> com.bamossza.project.controller.CarController.create(com.bamossza.project.entities.Car)",
+        "path": "/api/cars"
+      },
+      "name": "create-missing-body"
+    },
+    {
+      "status": 415,
+      "contentType": "application/json;charset=UTF-8",
+      "emptyBody": false,
+      "body": {
+        "timestamp": "<ignored>",
+        "status": 415,
+        "error": "Unsupported Media Type",
+        "exception": "org.springframework.web.HttpMediaTypeNotSupportedException",
+        "message": "Content type 'text/plain;charset=UTF-8' not supported",
+        "path": "/api/cars"
+      },
+      "name": "create-wrong-content-type"
+    },
+    {
+      "status": 200,
+      "contentType": "application/json;charset=UTF-8",
+      "emptyBody": false,
+      "body": [
+        {
+          "1": {
+            "carId": 1,
+            "carBrand": "MAZDA",
+            "carModel": "SKYACTIV-G 2.0",
+            "horsepower": "165",
+            "carEngine": "2000"
+          }
+        },
+        {
+          "2": {
+            "carId": 2,
+            "carBrand": null,
+            "carModel": null,
+            "horsepower": "165",
+            "carEngine": null
+          }
+        },
+        {
+          "3": {
+            "carId": 3,
+            "carBrand": "WITHID",
+            "carModel": null,
+            "horsepower": null,
+            "carEngine": null
+          }
+        },
+        {
+          "6": {
+            "carId": 6,
+            "carBrand": "YYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYY",
+            "carModel": null,
+            "horsepower": null,
+            "carEngine": null
+          }
+        },
+        {
+          "7": {
+            "carId": 7,
+            "carBrand": "โตโยต้าโตโยต้าโตโยต้า",
+            "carModel": null,
+            "horsepower": null,
+            "carEngine": null
+          }
+        },
+        {
+          "8": {
+            "carId": 8,
+            "carBrand": null,
+            "carModel": null,
+            "horsepower": "😀😀😀😀😀😀",
+            "carEngine": null
+          }
+        },
+        {
+          "10": {
+            "carId": 10,
+            "carBrand": null,
+            "carModel": null,
+            "horsepower": "   ",
+            "carEngine": " 2.0 "
+          }
+        }
+      ],
+      "name": "get-all-after-creates"
+    },
+    {
+      "status": 200,
+      "contentType": "application/json;charset=UTF-8",
+      "emptyBody": false,
+      "body": {
+        "carId": 1,
+        "carBrand": "MAZDA",
+        "carModel": "SKYACTIV-G 2.0",
+        "horsepower": "165",
+        "carEngine": "2000"
+      },
+      "name": "get-1"
+    },
+    {
+      "status": 200,
+      "contentType": "application/json;charset=UTF-8",
+      "emptyBody": false,
+      "body": {
+        "carId": 2,
+        "carBrand": null,
+        "carModel": null,
+        "horsepower": "165",
+        "carEngine": null
+      },
+      "name": "get-2-empty-string-became-null"
+    },
+    {
+      "status": 404,
+      "contentType": null,
+      "emptyBody": true,
+      "body": "",
+      "name": "get-missing"
+    },
+    {
+      "status": 400,
+      "contentType": null,
+      "emptyBody": true,
+      "body": "",
+      "name": "get-zero"
+    },
+    {
+      "status": 400,
+      "contentType": null,
+      "emptyBody": true,
+      "body": "",
+      "name": "get-negative"
+    },
+    {
+      "status": 400,
+      "contentType": "application/json;charset=UTF-8",
+      "emptyBody": false,
+      "body": {
+        "timestamp": "<ignored>",
+        "status": 400,
+        "error": "Bad Request",
+        "exception": "org.springframework.web.method.annotation.MethodArgumentTypeMismatchException",
+        "message": "Failed to convert value of type 'java.lang.String' to required type 'int'; nested exception is java.lang.NumberFormatException: For input string: \"abc\"",
+        "path": "/api/cars/abc"
+      },
+      "name": "get-non-numeric"
+    },
+    {
+      "status": 400,
+      "contentType": "application/json;charset=UTF-8",
+      "emptyBody": false,
+      "body": {
+        "timestamp": "<ignored>",
+        "status": 400,
+        "error": "Bad Request",
+        "exception": "org.springframework.web.method.annotation.MethodArgumentTypeMismatchException",
+        "message": "Failed to convert value of type 'java.lang.String' to required type 'int'; nested exception is java.lang.NumberFormatException: For input string: \"2147483648\"",
+        "path": "/api/cars/2147483648"
+      },
+      "name": "get-int-overflow"
+    },
+    {
+      "status": 200,
+      "contentType": null,
+      "emptyBody": true,
+      "body": "",
+      "name": "put-existing-partial-body-replaces-all"
+    },
+    {
+      "status": 200,
+      "contentType": "application/json;charset=UTF-8",
+      "emptyBody": false,
+      "body": {
+        "carId": 1,
+        "carBrand": "TOYOTA",
+        "carModel": null,
+        "horsepower": null,
+        "carEngine": null
+      },
+      "name": "get-1-after-put"
+    },
+    {
+      "status": 400,
+      "contentType": null,
+      "emptyBody": true,
+      "body": "",
+      "name": "put-existing-too-long"
+    },
+    {
+      "status": 200,
+      "contentType": "application/json;charset=UTF-8",
+      "emptyBody": false,
+      "body": {
+        "carId": 1,
+        "carBrand": "TOYOTA",
+        "carModel": null,
+        "horsepower": null,
+        "carEngine": null
+      },
+      "name": "get-1-unchanged-after-failed-put"
+    },
+    {
+      "status": 200,
+      "contentType": null,
+      "emptyBody": true,
+      "body": "",
+      "name": "put-missing-creates-new-id"
+    },
+    {
+      "status": 200,
+      "contentType": null,
+      "emptyBody": true,
+      "body": "",
+      "name": "put-zero-creates-new-id"
+    },
+    {
+      "status": 400,
+      "contentType": null,
+      "emptyBody": true,
+      "body": "",
+      "name": "put-missing-too-long"
+    },
+    {
+      "status": 200,
+      "contentType": null,
+      "emptyBody": true,
+      "body": "",
+      "name": "put-body-id-ignored"
+    },
+    {
+      "status": 200,
+      "contentType": null,
+      "emptyBody": true,
+      "body": "",
+      "name": "delete-missing"
+    },
+    {
+      "status": 400,
+      "contentType": null,
+      "emptyBody": true,
+      "body": "",
+      "name": "delete-zero"
+    },
+    {
+      "status": 400,
+      "contentType": null,
+      "emptyBody": true,
+      "body": "",
+      "name": "delete-negative"
+    },
+    {
+      "status": 200,
+      "contentType": null,
+      "emptyBody": true,
+      "body": "",
+      "name": "delete-existing"
+    },
+    {
+      "status": 404,
+      "contentType": null,
+      "emptyBody": true,
+      "body": "",
+      "name": "get-deleted"
+    },
+    {
+      "status": 200,
+      "contentType": null,
+      "emptyBody": true,
+      "body": "",
+      "name": "delete-already-deleted"
+    },
+    {
+      "status": 200,
+      "contentType": null,
+      "emptyBody": true,
+      "body": "",
+      "name": "create-after-gaps"
+    },
+    {
+      "status": 200,
+      "contentType": "application/json;charset=UTF-8",
+      "emptyBody": false,
+      "body": [
+        {
+          "1": {
+            "carId": 1,
+            "carBrand": "TOYOTA",
+            "carModel": null,
+            "horsepower": null,
+            "carEngine": null
+          }
+        },
+        {
+          "3": {
+            "carId": 3,
+            "carBrand": "WITHID-2",
+            "carModel": null,
+            "horsepower": null,
+            "carEngine": null
+          }
+        },
+        {
+          "6": {
+            "carId": 6,
+            "carBrand": "YYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYY",
+            "carModel": null,
+            "horsepower": null,
+            "carEngine": null
+          }
+        },
+        {
+          "7": {
+            "carId": 7,
+            "carBrand": "โตโยต้าโตโยต้าโตโยต้า",
+            "carModel": null,
+            "horsepower": null,
+            "carEngine": null
+          }
+        },
+        {
+          "8": {
+            "carId": 8,
+            "carBrand": null,
+            "carModel": null,
+            "horsepower": "😀😀😀😀😀😀",
+            "carEngine": null
+          }
+        },
+        {
+          "10": {
+            "carId": 10,
+            "carBrand": null,
+            "carModel": null,
+            "horsepower": "   ",
+            "carEngine": " 2.0 "
+          }
+        },
+        {
+          "11": {
+            "carId": 11,
+            "carBrand": "PUTNEW",
+            "carModel": null,
+            "horsepower": null,
+            "carEngine": null
+          }
+        },
+        {
+          "12": {
+            "carId": 12,
+            "carBrand": "PUTZERO",
+            "carModel": null,
+            "horsepower": null,
+            "carEngine": null
+          }
+        },
+        {
+          "16": {
+            "carId": 16,
+            "carBrand": "AFTER",
+            "carModel": null,
+            "horsepower": null,
+            "carEngine": null
+          }
+        }
+      ],
+      "name": "get-all-final"
+    }
+  ]
+}
