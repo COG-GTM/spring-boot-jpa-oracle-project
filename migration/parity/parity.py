@@ -140,11 +140,18 @@ def cmd_compare_snapshots(args):
     ids = sorted(set(a["byId"]) | set(b["byId"]), key=int)
     diffs = [i for i in ids if a["byId"].get(i) != b["byId"].get(i)]
     list_equal = a["list"] == b["list"]
-    report = {"leftCount": a["count"], "rightCount": b["count"], "byIdCompared": len(ids), "byIdMismatches": diffs, "listResponseIdentical": list_equal}
+    key = lambda row: int(next(iter(row)))
+    la, lb = a["list"], b["list"]
+    list_unordered_equal = (la.get("status") == lb.get("status") and la.get("contentType") == lb.get("contentType")
+                            and sorted(la.get("body") or [], key=key) == sorted(lb.get("body") or [], key=key))
+    report = {"leftCount": a["count"], "rightCount": b["count"], "byIdCompared": len(ids), "byIdMismatches": diffs,
+              "listResponseIdentical": list_equal, "listResponseIdenticalIgnoringOrder": list_unordered_equal}
     if args.out:
         json.dump(report, open(args.out, "w", encoding="utf-8"), indent=2)
-    print("snapshot parity: list identical=%s, by-id %d/%d identical" % (list_equal, len(ids) - len(diffs), len(ids)))
-    return 0 if list_equal and not diffs and a["count"] == b["count"] else 1
+    print("snapshot parity: list identical=%s, list identical ignoring order=%s, by-id %d/%d identical"
+          % (list_equal, list_unordered_equal, len(ids) - len(diffs), len(ids)))
+    ok_list = list_equal or (list_unordered_equal and not args.strict_order)
+    return 0 if ok_list and not diffs and a["count"] == b["count"] else 1
 
 
 def main():
@@ -154,7 +161,7 @@ def main():
     c = sub.add_parser("compare"); c.add_argument("left"); c.add_argument("right"); c.add_argument("--out")
     s = sub.add_parser("seed"); s.add_argument("--base-url", required=True); s.add_argument("--count", type=int, default=500); s.add_argument("--seed", type=int, default=20261109)
     n = sub.add_parser("snapshot"); n.add_argument("--base-url", required=True); n.add_argument("--out", required=True)
-    cs = sub.add_parser("compare-snapshots"); cs.add_argument("left"); cs.add_argument("right"); cs.add_argument("--out")
+    cs = sub.add_parser("compare-snapshots"); cs.add_argument("left"); cs.add_argument("right"); cs.add_argument("--out"); cs.add_argument("--strict-order", action="store_true", help="fail when GET /api/cars ordering differs (source has no ORDER BY)")
     args = p.parse_args()
     handlers = {"run": cmd_run, "compare": cmd_compare, "seed": cmd_seed, "snapshot": cmd_snapshot, "compare-snapshots": cmd_compare_snapshots}
     if args.cmd not in handlers:

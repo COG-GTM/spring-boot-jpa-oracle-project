@@ -1,20 +1,21 @@
 package com.bamossza.project.impl;
 
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Repository;
 
 import com.bamossza.project.dao.CarDao;
+import com.bamossza.project.dao.CarListView;
 import com.bamossza.project.entities.Car;
 import com.bamossza.project.repository.CarRepository;
 
 @Repository
+@Profile("oracle")
 public class CarDaoImpl implements CarDao {
 
 	private static final Logger logger = LoggerFactory.getLogger(CarDaoImpl.class);
@@ -70,15 +71,7 @@ public class CarDaoImpl implements CarDao {
     @Override
     public List<Map<String, Object>> findAll() {
     	try {
-    		List<Map<String, Object>> list = new ArrayList<>();
-        	Map<String, Object> map = new HashMap<>();
-        	List<Car> result = carRepository.findAll();
-            for (Car car : result) {
-            	map = new HashMap<>();
-            	map.put(car.getCarId().toString(), car);
-            	list.add(map);
-            }
-            return list;
+    		return CarListView.keyedById(carRepository.findAll());
 		} catch (Exception e) {
 			logger.error(e.getMessage(), e);
 		}
