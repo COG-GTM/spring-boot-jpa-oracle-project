@@ -22,6 +22,8 @@
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 		<java.version>1.8</java.version>
+		<!-- Boot 1.5.8 manages driver 3.4.3, which MongoDB 6.0+ rejects (legacy OP_QUERY removed). 3.12.x speaks OP_MSG. -->
+		<mongodb.version>3.12.14</mongodb.version>
 		
 	</properties>
 
@@ -47,6 +49,11 @@
 			<artifactId>spring-boot-starter-data-jpa</artifactId>
 		</dependency>
 		<dependency>
+			<!-- Driver only: the code uses the driver API directly, so Spring Data MongoDB (and its SpEL query CVEs) is not needed. -->
+			<groupId>org.mongodb</groupId>
+			<artifactId>mongodb-driver</artifactId>
+		</dependency>
+		<dependency>
 			<groupId>org.projectlombok</groupId>
 			<artifactId>lombok</artifactId>
 			<optional>true</optional>
@@ -68,7 +75,7 @@
 	<repositories>
 		<repository>
 			<id>jahia</id>
-			<url>http://maven.jahia.org/maven2/</url>
+			<url>https://maven.jahia.org/maven2/</url>
 		</repository>
 	</repositories>
 	<build>
@@ -86,5 +93,28 @@
 			</plugin>
 		</plugins>
 	</build>
+
+	<profiles>
+		<!-- Integration tests against real Oracle XE and MongoDB: mvn -Pit verify -->
+		<profile>
+			<id>it</id>
+			<build>
+				<plugins>
+					<plugin>
+						<groupId>org.apache.maven.plugins</groupId>
+						<artifactId>maven-failsafe-plugin</artifactId>
+						<executions>
+							<execution>
+								<goals>
+									<goal>integration-test</goal>
+									<goal>verify</goal>
+								</goals>
+							</execution>
+						</executions>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
+	</profiles>
 
 </project>

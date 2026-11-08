@@ -1,0 +1,62 @@
+name: build-and-parity
+
+on:
+  push:
+    branches: [master]
+  pull_request:
+
+jobs:
+  unit:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '8'
+          cache: maven
+      - name: Unit tests (no external services)
+        run: mvn -B clean test
+
+  integration-and-parity:
+    runs-on: ubuntu-latest
+    services:
+      oracle:
+        image: gvenzl/oracle-xe:11-slim
+        env:
+          ORACLE_PASSWORD: ci-only-oracle
+          APP_USER: carsystem
+          APP_USER_PASSWORD: carsystem
+        ports: ['1521:1521']
+        options: >-
+          --shm-size=1g
+          --health-cmd healthcheck.sh
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 30
+      mongodb:
+        image: mongo:7.0
+        ports: ['27017:27017']
+        options: >-
+          --health-cmd "mongosh --quiet --eval 'db.runCommand({ping:1})'"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 12
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '8'
+          cache: maven
+      - name: Unit + integration tests against real Oracle XE and MongoDB
+        run: mvn -B -Pit clean verify
+      - name: HTTP parity vs committed Oracle baseline (oracle and mongodb profiles)
+        run: migration/parity/ci-parity.sh target/car-0.0.1-SNAPSHOT.jar target/parity
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: parity-transcripts
+          path: |
+            target/parity
+            target/failsafe-reports
