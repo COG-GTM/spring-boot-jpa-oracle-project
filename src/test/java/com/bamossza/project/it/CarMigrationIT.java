@@ -115,6 +115,7 @@ public class CarMigrationIT {
         SortedMap<Integer, Car> rows = mongo.readAll();
         assertTrue(rows.lastKey() > maxOracleId);
         assertTrue(rows.lastKey() > first.sequenceSourceNextValue);
+        assertTrue("probed Oracle value must not be reissued", rows.lastKey() > second.sequenceSourceNextValue);
     }
 
     @Test

@@ -84,11 +84,11 @@ java -jar target/car-0.0.1-SNAPSHOT.jar --spring.profiles.active=mongodb --sprin
 ```
 
 What a run does: reads both stores fully, inserts missing rows, replaces rows whose fields differ, deletes target rows
-absent from the source, carries the ID sequence forward (MongoDB counter raised to at least the Oracle sequence's last
-value and the max ID), then re-reads both stores and reconciles count, ID sets, per-row fields and a SHA-256 checksum.
+absent from the source, carries the ID sequence forward (MongoDB counter raised to at least the probed Oracle sequence value
+and the max ID), then re-reads both stores and reconciles count, ID sets, per-row fields and a SHA-256 checksum.
 A second run with no source changes reports `inserted=0 updated=0 deleted=[]`.
 
-Note: step 2 draws one value from `CAR_SEQ` to learn its position, so every forward run leaves a one-ID gap in Oracle.
+Note: step 2 draws one value from `CAR_SEQ` to learn its position. That value is never issued by either store, so every forward run leaves a one-ID gap.
 
 ## Rollback
 

@@ -36,7 +36,8 @@ public class CarMigrationService {
             mongo.deleteAll(result.deleted);
             long oracleNext = oracle.nextSequenceValue();
             long maxId = oracleRows.isEmpty() ? 0 : oracleRows.lastKey();
-            mongo.sequence().raiseTo(Math.max(oracleNext - 1, maxId));
+            // The probed value is consumed in Oracle; skip it so no ID drawn from CAR_SEQ is ever issued again.
+            mongo.sequence().raiseTo(Math.max(oracleNext, maxId));
             result.sequenceSourceNextValue = oracleNext;
         } else if (direction == Direction.MONGODB_TO_ORACLE) {
             Plan plan = plan(mongoRows, oracleRows, result);
