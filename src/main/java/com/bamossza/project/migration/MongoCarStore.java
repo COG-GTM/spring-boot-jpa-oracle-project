@@ -56,8 +56,16 @@ public class MongoCarStore {
     }
 
     public void deleteAll(Collection<Integer> ids) {
-        if (!ids.isEmpty()) {
-            cars.deleteMany(in("_id", ids));
+        List<Integer> batch = new ArrayList<>();
+        for (Integer id : ids) {
+            batch.add(id);
+            if (batch.size() == BATCH) {
+                cars.deleteMany(in("_id", batch));
+                batch.clear();
+            }
+        }
+        if (!batch.isEmpty()) {
+            cars.deleteMany(in("_id", batch));
         }
     }
 
